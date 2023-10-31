@@ -6,7 +6,7 @@ const websiteNameEl = document.getElementById('website-name');
 const websiteUrlEl = document.getElementById('website-url');
 const bookmarksContainer = document.getElementById('bookmarks-container');
 
-let bookmarks = {};
+let bookmarks = [];
 
 // Show Modal, Focus on Input
 function showModal() {
@@ -42,7 +42,8 @@ function buildBookmarks() {
     bookmarksContainer.textContent = '';
     // Build items
     Object.keys(bookmarks).forEach((id) => {
-        const { name, url } = bookmarks[id];
+        if (bookmarks[id]) {
+            const { name, url } = bookmarks[id];
         // Item 
         const item = document.createElement('div');
         item.classList.add('item');
@@ -67,13 +68,14 @@ function buildBookmarks() {
         linkInfo.append(favicon, link);
         item.append(closeIcon, linkInfo);
         bookmarksContainer.appendChild(item);
+        }
     });
 }
 
 // Fetch Bookmarks
 function fetchBookmarks() {
     // Get bookmarks from local storage if availiable
-    if (localStorage.getItem('bookmarks')) {
+    if (localStorage.getItem(bookmarks)) {
         bookmarks =JSON.parse(localStorage.getItem('bookmarks'));
     } else {
         // Create bookmarks array in local storage
@@ -126,4 +128,3 @@ bookmarkForm.addEventListener('submit', storeBookmark);
 
 // On Load, Fetch Bookmarks
 fetchBookmarks();
-
